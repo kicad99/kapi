@@ -1,0 +1,17 @@
+syntax = "proto3";
+package base;
+
+import "base/logon.proto";
+import "base/ping.proto";
+
+option go_package = "github.com/kicad99/kapi/base";
+
+//登陆服务
+service Logon {
+  //登录
+  rpc Login(LoginReq) returns (LoginResp) {}
+  //登出
+  rpc Logout(LogoutReq) returns (LogoutResp) {}
+  // ping保持在线
+  rpc Ping(PingReq) returns (PingReq) {}
+}

@@ -1,0 +1,18 @@
+syntax = "proto3";
+package base;
+
+option go_package = "github.com/kicad99/kapi/base";
+
+// ping
+message PingReq {
+  // 0: ping
+  // 1: pong
+  int32 Code = 1;
+  //请求时间,ping可额外请求对方时间
+  bool RequestTime = 2;
+  //响应时间，unix时间，单位为秒
+  // the number of seconds elapsed since January 1, 1970 UTC
+  int64 PongTime = 3;
+  // sessionid
+  bytes SessionID = 4;
+}

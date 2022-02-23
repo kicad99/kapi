@@ -1,0 +1,99 @@
+syntax = "proto3";
+package base;
+
+option go_package = "github.com/kicad99/kapi/base";
+
+//客户端类型
+enum ClientType {
+  //未知
+  UNKNOWN = 0;
+  // web客户端
+  WEBCLIENT = 1;
+  // 安卓客户端
+  ANDROIDCLIENT = 2;
+  // ios客户端
+  IOSCLIENT = 3;
+  // pc客户端
+  PCCLIENT = 4;
+  // embed嵌入式客户端
+  EMBEDCLIENT = 5;
+}
+
+//客户端信息
+message ClientInfo {
+  //客户端型号
+  string Model = 1;
+  //客户端版本
+  string Version = 2;
+  //客户端渠道
+  string Channel = 3;
+}
+
+//登录请求
+message LoginReq {
+  //系统编号
+  string Sys = 1;
+  //用户名
+  string UserName = 2;
+  //密码
+  bytes PassHash = 3;
+  //密码编码方式
+  // 0:sha256(UpperHex(sha256(Sys+UserName+Pass))+UpperHex(ClientTime))
+  // 1:ssesionid
+  int32 PassHashMethod = 4;
+  // password salt
+  string Salt = 5;
+  //客户端时间戳，unix时间，单位为秒
+  // the number of seconds elapsed since January 1, 1970 UTC
+  int64 ClientTime = 6;
+  //客户端类型
+  ClientType ClientType = 7;
+  //客户端info, 可选
+  ClientInfo ClientInfo = 8;
+}
+
+//登录回应码
+enum LogonRespCode {
+  //成功
+  Success = 0;
+  //系统编号错误
+  SysErr = 1;
+  //用户名错误
+  UserNameErr = 2;
+  //密码错误
+  PassErr = 3;
+  //密码编码方式错误
+  PassHashMethodErr = 4;
+  // ssesionid错误
+  SessionIDErr = 5;
+  //客户端时间相差过大
+  ClientTimeErr = 6;
+  //未知错误
+  UnknownErr = 15;
+}
+
+//登录回应
+message LoginResp {
+  //登录回应码
+  LogonRespCode Code = 1;
+  //登录成功后的sessionid
+  bytes SessionID = 2;
+  //提示/错误信息
+  string Info = 15;
+}
+
+//登出请求
+message LogoutReq {
+  // sys
+  string Sys = 1;
+  // username
+  string UserName = 2;
+  // sessionid
+  bytes SessionID = 3;
+}
+
+//登出回应
+message LogoutResp {
+  //登出回应码
+  LogonRespCode Code = 1;
+}
